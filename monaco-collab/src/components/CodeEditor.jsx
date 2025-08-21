@@ -1,4 +1,3 @@
-// CodeEditor.jsx
 import React, { useEffect, useRef } from "react";
 import * as monaco from "monaco-editor";
 import socket from "../socket";
@@ -6,7 +5,6 @@ import socket from "../socket";
 export default function CodeEditor() {
   const editorRef = useRef(null);
   const editorInstanceRef = useRef(null);
-  const isRemoteUpdate = useRef(false);
 
   useEffect(() => {
     editorInstanceRef.current = monaco.editor.create(editorRef.current, {
@@ -15,21 +13,18 @@ export default function CodeEditor() {
       theme: "vs-dark",
     });
 
-    // Local change handler
+    // Send code
     editorInstanceRef.current.onDidChangeModelContent(() => {
-      if (isRemoteUpdate.current) {
-        isRemoteUpdate.current = false;
-        return;
-      }
       const code = editorInstanceRef.current.getValue();
+      console.log("📤 Sending codeChange:", code);
       socket.emit("codeChange", code);
     });
 
-    // Remote change listener
+    // Receive code
     socket.on("codeChange", (newCode) => {
+      console.log("📥 Received codeChange:", newCode);
       const currentCode = editorInstanceRef.current.getValue();
       if (currentCode !== newCode) {
-        isRemoteUpdate.current = true;
         editorInstanceRef.current.setValue(newCode);
       }
     });

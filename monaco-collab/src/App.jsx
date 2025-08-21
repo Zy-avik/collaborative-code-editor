@@ -1,11 +1,13 @@
 import React from "react";
 import CodeEditor from "./components/CodeEditor";
+import "./styles.css";
+import UserList from "./components/UserList"; 
 
 export default function App() {
   return (
-    <div style={{ padding: "16px" }}>
-      <h2 style={{ color: "#fff" }}>Monaco Editor — Day 1 Demo</h2>
-      <CodeEditor />
+    <div style={{ display: "flex" }}>
+        <UserList />
+        <CodeEditor />
     </div>
   );
 }

@@ -1,0 +1,6 @@
+/* src/styles.css */
+.other-user-cursor {
+  border-left: 2px solid red;   /* Vertical red line */
+  margin-left: 1px;
+}
+
